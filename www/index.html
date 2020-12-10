@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com https://bridge-protocol.azurewebsites.net http://localhost:60525/ 'unsafe-eval'; font-src *; style-src * 'unsafe-inline' 'self'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <title>Bridge Passport</title>
+    </head>
+    <body class="body">
+        <div class="scan-qr-overlay">
+            <div class="scan-qr-header color-gradient">
+                Scan QR Code
+                <span class="scan-qr-cancel">
+                    <i class="mdi mdi-close" style="font-size:16px;"></i>
+                </span>
+            </div>
+            <div class="scan-qr-target"></div>
+            <div class="scan-qr-footer color-gradient"></div>
+         </div>
+        <div class="loading">
+            <img src="./img/bridge-passport.png">
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="./js/qrscanner.js"></script>
+        <script type="text/javascript" src="./js/qrgenerator.js"></script>
+        <script type="text/javascript" src="./js/bridgeprotocol.min.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+    </body>
+</html>

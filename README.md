@@ -6,7 +6,7 @@
 <h3 align="center">Bridge Passport Mobile</h3>
 
 <p align="center">
-<img src="./docs/passport.jpg" width="450px">
+<img src="./passport.png" width="450px">
 </p>
 
 # Summary
