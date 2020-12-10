@@ -15,7 +15,7 @@ Bridge Passport Mobile enables end users to sync their Bridge Passport to their 
 # User Guide and Feature Documentation
 Visit <a href="https://bridge-protocol.github.io/docs/extension-passport">docs.bridgeprotocol.io</a> to get started.
 
-# Local Installation
+# Local Build and Run
 Follow instructions to configure cordova and android studio:
 https://cordova.apache.org/docs/en/latest/guide/cli/
 
