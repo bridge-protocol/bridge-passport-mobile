@@ -13,7 +13,7 @@
 Bridge Passport Mobile enables end users to sync their Bridge Passport to their mobile device to use their Bridge Identity on the go.
 
 # User Guide and Feature Documentation
-Visit <a href="https://bridge-protocol.github.io/docs/extension-passport">docs.bridgeprotocol.io</a> to get started.
+View the <a href="https://bridgeprotocol.io/docs/mobile">Bridge Identity Documentation</a> to get started.
 
 # Local Build and Run
 Follow instructions to configure Apache Cordova and Android Studio:
