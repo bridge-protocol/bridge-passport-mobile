@@ -52,7 +52,7 @@ export default {
             this.loading = false;
         },
         verifyUnlockPassword: async function(){
-            let passport = new BridgeProtocol.Models.Passport();
+            let passport = new app.$BridgeProtocol.Models.Passport();
             let success = false;
             try{
                 success = await passport.open(this.passportContent, this.unlockPassword);

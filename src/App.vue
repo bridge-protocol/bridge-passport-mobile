@@ -103,7 +103,7 @@ export default {
             if(qrValue){
                 this.qr = qrValue;
                 if(qrType == "passport"){
-                    let res = await BridgeProtocol.Services.RequestRelay.getRequest(this.qr);
+                    let res = await this.$BridgeProtocol.Services.RequestRelay.getRequest(this.qr);
                     if(res && res.request){
                         var storage = window.localStorage;
                         await storage.setItem('passport', res.request);

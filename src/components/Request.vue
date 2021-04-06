@@ -237,28 +237,28 @@ export default {
                 app.loading = true;
                 app.loadStatus = "Generating Request Code";
 
-                let context = await BridgeMobile.getPassportContext();
-                app.token = BridgeMobile.createRandom();
-                let authRequest = await BridgeMobile.createAuthRequest(context.passport, context.passphrase, app.token, app.claims);
-                let req = await BridgeProtocol.Services.RequestRelay.createRequest(2, authRequest);
+                let context = await app.$BridgeMobile.getPassportContext();
+                app.token = app.$BridgeMobile.createRandom();
+                let authRequest = await app.$BridgeMobile.createAuthRequest(context.passport, context.passphrase, app.token, app.claims);
+                let req = await app.$BridgeProtocol.Services.RequestRelay.createRequest(2, authRequest);
                 if(!req && !req.id){
                     app.loading = false;
                     return;
                 }
 
-                app.qr = await QRCodeGenerator.create(req.id);
+                app.qr = await app.$QrCodeGenerator.create(req.id);
                 app.dialog = true;
                 app.loading = false;
 
-                let response = await BridgeMobile.waitGetAuthResponse(req.id);
+                let response = await app.$BridgeMobile.waitGetAuthResponse(req.id);
                 app.dialog = false;
                 app.loading = true;
                 app.loadStatus = "Response Received";
                 setTimeout(async function(){
                     app.loadStatus = "Decrypting and Validating Response";
-                    let context = await BridgeMobile.getPassportContext();
-                    app.response = await BridgeMobile.validateAuthResponse(context.passport, context.passphrase, app.token, response);
-                    app.claims = await BridgeMobile.getFullClaimsInfo(app.response.claims);
+                    let context = await app.$BridgeMobile.getPassportContext();
+                    app.response = await app.$BridgeMobile.validateAuthResponse(context.passport, context.passphrase, app.token, response);
+                    app.claims = await app.$BridgeMobile.getFullClaimsInfo(app.response.claims);
                     console.log(JSON.stringify(app.response));
                     app.loading = false;
                 }, 1000);
@@ -282,7 +282,7 @@ export default {
             }
         },
         getDate(date){
-            return BridgeMobile.getReadableDate(date);
+            return app.$BridgeMobile.getReadableDate(date);
         }
     },
      mounted: function () {

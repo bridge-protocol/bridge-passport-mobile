@@ -20,7 +20,7 @@ export default {
     methods: {
         init: async function()
         {
-            var context = await BridgeMobile.getPassportContext();
+            var context = await this.$BridgeMobile.getPassportContext();
             if(context.passport)
                 this.passportId = context.passport.id;
         }

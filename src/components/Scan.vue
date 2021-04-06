@@ -141,13 +141,13 @@ export default {
                 app.loading = true;
                 app.loadStatus = "Decrypting and Validating Request"; 
                 app.id = app.qr;
-                let req = await BridgeProtocol.Services.RequestRelay.getRequest(app.id);
-                app.requestMessage = await BridgeMobile.validateAuthRequest(req.request);
+                let req = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.id);
+                app.requestMessage = await app.$BridgeMobile.validateAuthRequest(req.request);
 
                 app.messageValid = app.requestMessage.signatureValid;
 
-                let passportContext = await BridgeMobile.getPassportContext();
-                let requestingPassport = await BridgeMobile.getPassportDetails(passportContext.passport, passportContext.passphrase, app.requestMessage.passportId);
+                let passportContext = await app.$BridgeMobile.getPassportContext();
+                let requestingPassport = await app.$BridgeMobile.getPassportDetails(passportContext.passport, passportContext.passphrase, app.requestMessage.passportId);
                 requestingPassport.name = requestingPassport.id;
                 requestingPassport.known = false;
                 if(requestingPassport.partnerName && requestingPassport.partnerName.length > 0){
@@ -156,7 +156,7 @@ export default {
                 }
                 app.requestingPassport = requestingPassport;
                 
-                let requestedClaimTypes = await BridgeMobile.getClaimTypes(app.requestMessage.payload.claimTypes);
+                let requestedClaimTypes = await app.$BridgeMobile.getClaimTypes(app.requestMessage.payload.claimTypes);
                 if(requestedClaimTypes){
                     for(let i=0; i<requestedClaimTypes.length; i++){
                         let claim = passportContext.passport.getClaimPackage(requestedClaimTypes[i].id);
@@ -179,11 +179,11 @@ export default {
             }
             this.loading = true;
             this.loadStatus = "Encrypting Claims";
-            let passportContext = await BridgeMobile.getPassportContext();
-            let response = await BridgeMobile.createAuthResponse(passportContext.passport, passportContext.passphrase, this.requestMessage, this.selectedClaimTypes); 
+            let passportContext = await app.$BridgeMobile.getPassportContext();
+            let response = await app.$BridgeMobile.createAuthResponse(passportContext.passport, passportContext.passphrase, this.requestMessage, this.selectedClaimTypes); 
 
             this.loadStatus = "Sending Response";
-            let req = await BridgeProtocol.Services.RequestRelay.createResponse(this.id, response);
+            let req = await app.$BridgeProtocol.Services.RequestRelay.createResponse(this.id, response);
             this.requestSent = true;
             this.loading = false;
         },

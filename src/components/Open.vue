@@ -11,7 +11,7 @@
             </div>
             </v-progress-circular>
         </v-overlay>
-        <v-container  class="justify-center text-center" v-if="!loading">
+        <v-container  class="justify-center text-center" v-if="!loading && !scan">
             <v-app-bar
             app
             clipped-left
@@ -26,9 +26,18 @@
                     Open your Bridge Passport Browser Extension and click "Send to Mobile" to generate your handoff QR code.  Click below to scan the QR code and import your Bridge Identity.
                 </p>
             </center>
-
-            <v-btn class="button-light" @click="scan">Scan QR Code</v-btn>
+            <v-btn class="button-light" @click="doScan">Scan QR Code</v-btn>
         </v-container>
+        <div class="scan-qr-overlay" v-if="!loading && scan">
+            <div class="scan-qr-header color-gradient">
+                Scan QR Code
+                <span class="scan-qr-cancel">
+                    <i class="mdi mdi-close" style="font-size:16px;"></i>
+                </span>
+            </div>
+            <div class="scan-qr-target"></div>
+            <div class="scan-qr-footer color-gradient"></div>
+         </div>
     </v-container>
 </template>
 
@@ -38,6 +47,7 @@ export default {
     data: function() {
         return {
             loading: false,
+            scan: false,
             loadStatus: "Please Wait",
             passport: null
         }
@@ -50,7 +60,7 @@ export default {
                 {
                     app.loading = true;
                     try{
-                        let res = await BridgeProtocol.Services.RequestRelay.getRequest(app.qr);
+                        let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.qr);
                         app.passport = res.request;
                         app.loading = false;
                     }
@@ -61,8 +71,9 @@ export default {
                 }
             },500);
         },
-        scan(){
-            location.href="index.html?s=true&t=passport";
+        async doScan(){
+            this.scan = true;
+            let code = await this.$QrCodeScanner.scan();
         }
     },
     mounted: async function()

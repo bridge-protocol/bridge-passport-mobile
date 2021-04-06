@@ -129,10 +129,10 @@ export default {
                 app.passportId = "";
                 app.publicKey = "";
 
-                app.passportContext = await BridgeMobile.getPassportContext();
+                app.passportContext = await app.$BridgeMobile.getPassportContext();
                 app.passportId = app.passportContext.passport.id;
                 app.publicKey = app.passportContext.passport.publicKey;
-                app.version = BridgeMobile.passportVersion();
+                app.version = app.$BridgeMobile.passportVersion();
 
                 app.neoWallet = app.passportContext.passport.getWalletForNetwork("neo");
                 app.ethWallet = app.passportContext.passport.getWalletForNetwork("eth");
@@ -144,7 +144,7 @@ export default {
             this.refreshing = true;
             this.loadStatus = "Decrypting Identity Claims";
             this.claims = [];
-            let passportContext = await BridgeMobile.getPassportContext();
+            let passportContext = await this.$BridgeMobile.getPassportContext();
             let decryptedClaims = await passportContext.passport.getDecryptedClaims(null, passportContext.passphrase);
 
             //Update with all the user friendly info
@@ -169,7 +169,7 @@ export default {
             }
         },
         getDate(date){
-            return BridgeMobile.getReadableDate(date);
+            return this.$BridgeMobile.getReadableDate(date);
         },
         openUrl: function(url){
             window.open(url);
