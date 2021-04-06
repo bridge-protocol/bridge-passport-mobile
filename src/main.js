@@ -12,18 +12,18 @@ Vue.use(Vuetify)
 new Vue({
   el: '#app',
   vuetify: new Vuetify({
-                theme: {
-                    themes: {
-                        dark: {
-                            primary: '#904099',
-                            secondary: '#6155a3',
-                            accent: '#3c7fc6',
-                            info: '#6155a3',
-                            error: '#b71c1c',
-                        },
-                    },
-                },
-            }),
+    theme: {
+      themes: {
+        dark: {
+          primary: '#904099',
+          secondary: '#6155a3',
+          accent: '#3c7fc6',
+          info: '#6155a3',
+          error: '#b71c1c'
+        }
+      }
+    }
+  }),
   router,
   components: { App },
   template: '<App/>'

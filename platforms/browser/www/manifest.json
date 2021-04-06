@@ -7,5 +7,5 @@
   "description": "App to allow users to create, manage, and use their Bridge Passport on the Bridge Protocol Network",
   "author": "Bridge Protocol Corporation",
   "icons": [],
-  "start_url": "dist/index.html"
+  "start_url": "index.html"
 }

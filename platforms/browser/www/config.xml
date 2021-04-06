@@ -7,7 +7,7 @@
     <author email="dev@bridgeprotocol.io" href="https://www.bridgeprotocol.io">
         Bridge Protocol Corporation
     </author>
-    <content src="dist/index.html" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
