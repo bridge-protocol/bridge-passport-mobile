@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Bridge Passport",
+  "short_name": "Bridge Passport",
+  "version": "io.bridgeprotocol.bridgepassport",
+  "description": "App to allow users to create, manage, and use their Bridge Passport on the Bridge Protocol Network",
+  "author": "Bridge Protocol Corporation",
+  "icons": [],
+  "start_url": "dist/index.html"
+}
