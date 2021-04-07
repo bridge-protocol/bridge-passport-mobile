@@ -5,60 +5,7 @@ import Vuetify from 'vuetify'
 import App from './App'
 import router from './router'
 
-function initVue(){
-    Vue.config.productionTip = false
-    Vue.use(Vuetify)
-
-    Vue.prototype.$BridgeProtocol = BridgeProtocol;
-
-    var QRCodeGenerator = class QRCodeGenerator{
-    create = async(text) => {
-        return new Promise(function(resolve, reject){
-            let options = {
-                width: 250,
-                height: 250,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-            };
-
-            cordova.plugins.qrcodejs.encode('TEXT_TYPE', text, (base64EncodedQRImage) => {
-                resolve(base64EncodedQRImage);
-                }, (err) => {
-                reject(err);
-                }, options);
-        });
-    }
-    }
-    Vue.prototype.$QrCodeGenerator = new QRCodeGenerator();
-
-    var QRCodeScanner = class QRCodeScanner{
-        scan = async () => {
-            return new Promise(function(resolve, reject){
-                window.QRScanner.show(function(status){
-                    console.log(status);
-                    var callback = function(err, contents){
-                        if(err){
-                            console.log("Error: " + err);
-                            reject(err);
-                        }
-
-                        console.log("Code found: " + contents);
-                            resolve(contents);
-                        };
-                        
-                        window.QRScanner.scan(callback);
-                });
-            });
-        };
-        
-        hide = () => {
-            window.QRScanner.hide();
-        }
-    }
-    Vue.prototype.$QrCodeScanner = new QRCodeScanner();
-
-
-    Vue.prototype.$BridgeMobile = {
+var BridgeMobile = {
     async getPassportContext() {
         var storage = window.localStorage;
         let passphrase = storage.getItem('passphrase');
@@ -295,7 +242,62 @@ function initVue(){
         }
         return text;
     }
+};
+
+var QRCodeGenerator = class QRCodeGenerator{
+    create = async(text) => {
+        return new Promise(function(resolve, reject){
+            let options = {
+                width: 250,
+                height: 250,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+            };
+
+            cordova.plugins.qrcodejs.encode('TEXT_TYPE', text, (base64EncodedQRImage) => {
+                resolve(base64EncodedQRImage);
+                }, (err) => {
+                reject(err);
+                }, options);
+        });
     }
+}
+
+
+var QRCodeScanner = class QRCodeScanner{
+    scan = async () => {
+        return new Promise(function(resolve, reject){
+            window.QRScanner.show(function(status){
+                console.log(status);
+                var callback = function(err, contents){
+                    if(err){
+                        console.log("Error: " + err);
+                        reject(err);
+                    }
+
+                    console.log("Code found: " + contents);
+                        resolve(contents);
+                    };
+                    
+                    window.QRScanner.scan(callback);
+            });
+        });
+    };
+
+    hide = () => {
+        window.QRScanner.hide();
+    }
+}
+
+
+
+function initVue(){
+    Vue.config.productionTip = false
+    Vue.use(Vuetify)
+    Vue.prototype.$QrCodeGenerator = new QRCodeGenerator();
+    Vue.prototype.$QrCodeScanner = new QRCodeScanner();
+    Vue.prototype.$BridgeProtocol = BridgeProtocol;
+    Vue.prototype.$BridgeMobile = BridgeMobile;
 
     /* eslint-disable no-new */
     new Vue({
@@ -321,7 +323,6 @@ function initVue(){
     console.log("Vue initialized");
 }
 
-
 var app = {
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -329,6 +330,23 @@ var app = {
     onDeviceReady: async function() { 
         this.receivedEvent('deviceready');
         $(".loading").hide();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const qrScan = urlParams.get('s');
+        const qrType = urlParams.get('t');
+
+        let code;
+        if(qrScan){
+            $("#wrapper").hide();
+            $(".scan-qr-overlay").show();
+            $(".scan-qr-cancel").click(function(){
+                location.href="index.html";
+            });
+            let qrCodeScanner = new QRCodeScanner();
+            code = await qrCodeScanner.scan();
+            $(".scan-qr-overlay").hide();
+            location.href="index.html?t=" + qrType + "&v=" + code;
+        }
         initVue();
     },
     receivedEvent: function(id) {

@@ -99,7 +99,7 @@ export default {
             const urlParams = new URLSearchParams(window.location.search);
             const qrType = urlParams.get('t');
             const qrValue = urlParams.get('v');
-
+            
             if(qrValue){
                 this.qr = qrValue;
                 if(qrType == "passport"){
@@ -140,12 +140,12 @@ export default {
             var storage = window.localStorage;
             storage.removeItem('passphrase');
             storage.removeItem('passport');
-            location.href="app.html";
+            location.href="index.html";
         },
         lock: function(){
             var storage = window.localStorage;
             storage.removeItem('passphrase');
-            location.href="app.html";
+            location.href="index.html";
         }
     },
     created () {

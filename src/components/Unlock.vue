@@ -15,7 +15,7 @@
                 <v-toolbar-title class="subtitle-1">Unlock Passport</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-                <div class="caption text-justify mt-4">
+                <div class="caption text-justify mt-4 mb-2">
                     To unlock your passport, please provide the password you provided when it was created.
                 </div>
                 <v-row>
@@ -28,7 +28,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn text @click="unload();">Unload Passport</v-btn>
-                <v-btn color="accent" @click="verifyUnlockPassword();">Unlock</v-btn>
+                <v-btn color="button-light" @click="verifyUnlockPassword();">Unlock</v-btn>
             </v-card-actions>
         </v-card>
     </v-container>
@@ -52,7 +52,7 @@ export default {
             this.loading = false;
         },
         verifyUnlockPassword: async function(){
-            let passport = new app.$BridgeProtocol.Models.Passport();
+            let passport = new this.$BridgeProtocol.Models.Passport();
             let success = false;
             try{
                 success = await passport.open(this.passportContent, this.unlockPassword);
@@ -65,7 +65,7 @@ export default {
                 var storage = window.localStorage;
                 storage.setItem('passport', this.passportContent);
                 storage.setItem('passphrase', this.unlockPassword);
-                location.href="app.html";
+                location.href="index.html";
             }
             else{
                 this.unlockErrorMessage = "Invalid password, try again.";
@@ -75,7 +75,7 @@ export default {
             var storage = window.localStorage;
             storage.removeItem('passphrase');
             storage.removeItem('passport');
-            location.href="app.html";
+            location.href="index.html";
         }
     },
     mounted: function () {

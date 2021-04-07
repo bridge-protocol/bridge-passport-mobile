@@ -62,16 +62,7 @@ export default {
             },500);
         },
         async doScan(){
-            $("#wrapper").hide();
-            $(".scan-qr-overlay").show();
-            $(".scan-qr-cancel").click(function(){
-                $("#wrapper").show();
-                $(".scan-qr-overlay").hide();
-                this.$QrCodeScanner.hide();
-                this.scan = false;
-            });
-            let code = await this.$QrCodeScanner.scan();
-            alert(code);
+            location.href="index.html?s=true&t=passport";
         }
     },
     mounted: async function()

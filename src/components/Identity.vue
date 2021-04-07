@@ -52,7 +52,7 @@
                 :key="claim.id"
                 @click="claimSelected(claim)"
                 >
-                    <v-expansion-panel-header class="left-border-color-primary pt-1 pb-1">
+                    <v-expansion-panel-header class="left-border-color-primary pt-2 pb-2">
                         <v-row>
                             <v-col cols="auto"><v-img src="./img/bridge-token-white.png" height="40" width="40"></v-img></v-col>
                             <v-col cols="auto">
@@ -148,7 +148,7 @@ export default {
             let decryptedClaims = await passportContext.passport.getDecryptedClaims(null, passportContext.passphrase);
 
             //Update with all the user friendly info
-            this.claims = await BridgeMobile.getFullClaimsInfo(decryptedClaims);
+            this.claims = await this.$BridgeMobile.getFullClaimsInfo(decryptedClaims);
 
             this.refreshing = false;
         },
