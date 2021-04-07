@@ -9,12 +9,29 @@
     <title>bridge-passport-mobile</title>
     <script src="cordova.js"></script>
     <script src="./js/bridgeprotocol.min.js"></script>
+    <script src="./js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/app.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   </head>
-  <body>
-    <div id="app"></div>
+  <body class="body">
+     <div class="scan-qr-overlay">
+        <div class="scan-qr-header color-gradient">
+            Scan QR Code
+            <span class="scan-qr-cancel">
+                <i class="mdi mdi-close" style="font-size:16px;"></i>
+            </span>
+        </div>
+        <div class="scan-qr-target"></div>
+        <div class="scan-qr-footer color-gradient"></div>
+     </div>
+     <div id="wrapper">
+      <div class="loading">
+        <img src="./img/bridge-passport.png">
+      </div>
+      <div id="app"></div>
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>

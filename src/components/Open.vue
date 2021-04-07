@@ -1,5 +1,5 @@
 <template>
-    <v-container fill-height justify-center dark>
+    <v-container id="container" fill-height justify-center dark>
         <v-overlay :value="loading">
             <v-progress-circular
                 indeterminate
@@ -28,16 +28,6 @@
             </center>
             <v-btn class="button-light" @click="doScan">Scan QR Code</v-btn>
         </v-container>
-        <div class="scan-qr-overlay" v-if="!loading && scan">
-            <div class="scan-qr-header color-gradient">
-                Scan QR Code
-                <span class="scan-qr-cancel">
-                    <i class="mdi mdi-close" style="font-size:16px;"></i>
-                </span>
-            </div>
-            <div class="scan-qr-target"></div>
-            <div class="scan-qr-footer color-gradient"></div>
-         </div>
     </v-container>
 </template>
 
@@ -72,8 +62,16 @@ export default {
             },500);
         },
         async doScan(){
-            this.scan = true;
+            $("#wrapper").hide();
+            $(".scan-qr-overlay").show();
+            $(".scan-qr-cancel").click(function(){
+                $("#wrapper").show();
+                $(".scan-qr-overlay").hide();
+                this.$QrCodeScanner.hide();
+                this.scan = false;
+            });
             let code = await this.$QrCodeScanner.scan();
+            alert(code);
         }
     },
     mounted: async function()

@@ -5,7 +5,6 @@ import Vuetify from 'vuetify'
 import App from './App'
 import router from './router'
 
-
 function initVue(){
     Vue.config.productionTip = false
     Vue.use(Vuetify)
@@ -33,24 +32,28 @@ function initVue(){
     Vue.prototype.$QrCodeGenerator = new QRCodeGenerator();
 
     var QRCodeScanner = class QRCodeScanner{
-    scan = async () => {
-        return new Promise(function(resolve, reject){
-            window.QRScanner.show(function(status){
-                console.log(status);
-                var callback = function(err, contents){
-                    if(err){
-                        console.log("Error: " + err);
-                        reject(err);
-                    }
+        scan = async () => {
+            return new Promise(function(resolve, reject){
+                window.QRScanner.show(function(status){
+                    console.log(status);
+                    var callback = function(err, contents){
+                        if(err){
+                            console.log("Error: " + err);
+                            reject(err);
+                        }
 
-                    console.log("Code found: " + contents);
-                        resolve(contents);
-                    };
-                    
-                    window.QRScanner.scan(callback);
+                        console.log("Code found: " + contents);
+                            resolve(contents);
+                        };
+                        
+                        window.QRScanner.scan(callback);
+                });
             });
-        });
-    }
+        };
+        
+        hide = () => {
+            window.QRScanner.hide();
+        }
     }
     Vue.prototype.$QrCodeScanner = new QRCodeScanner();
 
@@ -325,6 +328,7 @@ var app = {
     },
     onDeviceReady: async function() { 
         this.receivedEvent('deviceready');
+        $(".loading").hide();
         initVue();
     },
     receivedEvent: function(id) {
