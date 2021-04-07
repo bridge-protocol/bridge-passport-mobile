@@ -11,7 +11,7 @@
             </div>
             </v-progress-circular>
         </v-overlay>
-        <v-container  class="justify-center text-center" v-if="!loading && !scan">
+        <v-container  class="justify-center text-center" v-if="!loading">
             <v-app-bar
             app
             clipped-left
@@ -26,7 +26,7 @@
                     Open your Bridge Passport Browser Extension and click "Send to Mobile" to generate your handoff QR code.  Click below to scan the QR code and import your Bridge Identity.
                 </p>
             </center>
-            <v-btn class="button-light" @click="doScan">Scan QR Code</v-btn>
+            <v-btn class="button-light" @click="scan">Scan QR Code</v-btn>
         </v-container>
     </v-container>
 </template>
@@ -37,7 +37,6 @@ export default {
     data: function() {
         return {
             loading: false,
-            scan: false,
             loadStatus: "Please Wait",
             passport: null
         }
@@ -61,8 +60,23 @@ export default {
                 }
             },500);
         },
-        async doScan(){
-            location.href="index.html?s=true&t=passport";
+        async scan(){
+            alert('scan');
+            $("#app_wrapper").hide();
+            $(".scan-qr-overlay").show();
+            var code = await this.$QrCodeScanner.scan();
+            this.$QrCodeScanner.cancel();
+            $("#app_wrapper").show();
+            $(".scan-qr-overlay").hide();
+
+            let res = await this.$BridgeProtocol.Services.RequestRelay.getRequest(code);
+            if(res && res.request){
+                var storage = window.localStorage;
+                await storage.setItem('passport', res.request);
+                this.$router.push({ path: '/unlock' });
+            }
+            else
+                this.$router.push({ path: '/open', query: { } });
         }
     },
     mounted: async function()

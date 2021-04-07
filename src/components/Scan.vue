@@ -130,10 +130,20 @@ export default {
     },
     methods:{
         async init(){
+            
+        },
+        scan(){
             let app = this;
             this.loading = true;
             setTimeout(async function(){
-                let qr = app.qr;
+                $("#app_wrapper").hide();
+                $(".scan-qr-overlay").show();
+                var qr = await app.$QrCodeScanner.scan();
+                app.$QrCodeScanner.cancel();
+                $("#app_wrapper").show();
+                $(".scan-qr-overlay").hide();
+
+
                 if(qr == null || qr == 'undefined' || qr.length == 0){
                     app.loading = false;
                     return;
@@ -141,6 +151,7 @@ export default {
                 app.loading = true;
                 app.loadStatus = "Decrypting and Validating Request"; 
                 app.id = app.qr;
+            
                 let req = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.id);
                 app.requestMessage = await app.$BridgeMobile.validateAuthRequest(req.request);
 
@@ -168,9 +179,6 @@ export default {
                 app.loading = false;
             }, 500);
         },
-        scan(){
-            location.href="index.html?s=true&t=auth";
-        },
         async sendClaims(){
             if(this.selectedClaimTypes.length == 0){
                 this.error = true;
@@ -188,7 +196,7 @@ export default {
             this.loading = false;
         },
         cancel(){
-            this.$router.push({ path: '/home', query: { } });
+            this.$router.push({ path: '/', query: { } });
             this.$router.go(1);
         }
     },

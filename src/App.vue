@@ -95,29 +95,7 @@ export default {
         openUrl(url){
             window.open(url);
         },
-        init: async function(){
-            const urlParams = new URLSearchParams(window.location.search);
-            const qrType = urlParams.get('t');
-            const qrValue = urlParams.get('v');
-            
-            if(qrValue){
-                this.qr = qrValue;
-                if(qrType == "passport"){
-                    let res = await this.$BridgeProtocol.Services.RequestRelay.getRequest(this.qr);
-                    if(res && res.request){
-                        var storage = window.localStorage;
-                        await storage.setItem('passport', res.request);
-                        this.$router.push({ path: '/unlock' });
-                    }
-                    else
-                        this.$router.push({ path: '/open', query: { } });
-                }
-                else if(qrType == "auth")
-                    this.$router.push({ path: '/scan', query: { qr: qrValue } });
-
-                this.$router.go(1);
-            }
-            
+        init: async function(){           
             var storage = window.localStorage;
             let passport = storage.getItem('passport');
             let passphrase = storage.getItem('passphrase');
@@ -125,14 +103,10 @@ export default {
             this.passportLoaded = passport != null;
             this.passportUnlocked = passphrase != null;
 
-            if(!this.passportLoaded){
-                this.$router.push({ path: '/open', query: { } });
-                this.$router.go(1);
-            }
-            else if(this.passportLoaded && !this.passportUnlocked){
-                this.$router.push({ path: '/unlock', query: { } });
-                this.$router.go(1);
-            }
+            if(!this.passportLoaded)
+                this.navigate('/open');
+            else if(this.passportLoaded && !this.passportUnlocked)
+                this.navigate('/unlock');
 
             this.loading = false;
         },
@@ -140,12 +114,16 @@ export default {
             var storage = window.localStorage;
             storage.removeItem('passphrase');
             storage.removeItem('passport');
-            location.href="index.html";
+            this.navigate('/');
         },
         lock: function(){
             var storage = window.localStorage;
             storage.removeItem('passphrase');
-            location.href="index.html";
+            this.navigate('/');
+        },
+        navigate(path, query){
+            this.$router.push({ path, query });
+            this.$router.go(1);
         }
     },
     created () {
