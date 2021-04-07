@@ -1,0 +1,6 @@
+xcproj - update any \ to / in path  
+
+set write permissions on /Scripts/copy-www-build-step.sh
+sudo chmod +x 
+
+replace UIApplication.openSettingsURLString with UIApplicationOpenSettingsURLString

@@ -323,17 +323,20 @@ function initVue(){
     console.log("Vue initialized");
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+const qrScan = urlParams.get('s');
+const qrType = urlParams.get('t');
+
+console.log("Loaded with params: " + qrType + " " + qrScan);
+
 var app = {
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
     onDeviceReady: async function() { 
         this.receivedEvent('deviceready');
+        console.log(location.href);
         $(".loading").hide();
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const qrScan = urlParams.get('s');
-        const qrType = urlParams.get('t');
 
         let code;
         if(qrScan){
@@ -345,6 +348,8 @@ var app = {
             let qrCodeScanner = new QRCodeScanner();
             code = await qrCodeScanner.scan();
             $(".scan-qr-overlay").hide();
+
+            console.log("Barcode found - " + code + " redirecting");
             location.href="index.html?t=" + qrType + "&v=" + code;
         }
         initVue();
@@ -353,5 +358,4 @@ var app = {
         console.log('Received Event: ' + id);
     }
   };
-  
 app.initialize();
