@@ -2,7 +2,7 @@
 
 platform :ios, '11.0'
 
-target 'C:\Workspaces\Bridge\RnD\bridge-passport-mobile\platforms\ios\Bridge Passport' do
-	project 'C:\Workspaces\Bridge\RnD\bridge-passport-mobile\platforms\ios\Bridge Passport.xcodeproj'
+target 'Bridge Passport' do
+	project 'Bridge Passport.xcodeproj'
 
 end

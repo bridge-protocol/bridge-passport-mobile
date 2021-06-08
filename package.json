@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "cordova-android": "9.0.0",
-    "cordova-ios": "6.2.0",
     "ios-deploy": "^1.11.4",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
@@ -90,9 +89,9 @@
   ],
   "cordova": {
     "platforms": [
-      "ios",
       "android",
-      "browser"
+      "browser",
+      "ios"
     ],
     "plugins": {
       "cordova-plugin-file": {},

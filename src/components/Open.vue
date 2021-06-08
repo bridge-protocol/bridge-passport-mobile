@@ -49,7 +49,7 @@ export default {
                 {
                     app.loading = true;
                     try{
-                        let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.qr);
+                        let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.qrscan);
                         app.passport = res.request;
                         app.loading = false;
                     }
@@ -61,7 +61,7 @@ export default {
             },500);
         },
         async scan(){
-            alert('scan');
+            $("body").hide();
             $("#app_wrapper").hide();
             $(".scan-qr-overlay").show();
             var code = await this.$QrCodeScanner.scan();

@@ -7,10 +7,10 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-file": {
+    "cordova-plugin-add-swift-support": {
       "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
     },
-    "cordova-plugin-add-swift-support": {
+    "cordova-plugin-file": {
       "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
     },
     "cordova-plugin-qrcodejs": {

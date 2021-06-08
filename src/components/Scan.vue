@@ -130,7 +130,7 @@ export default {
     },
     methods:{
         async init(){
-            
+            alert("Init");
         },
         scan(){
             let app = this;
@@ -144,39 +144,51 @@ export default {
                 $(".scan-qr-overlay").hide();
 
 
+                alert("Code Found: " + qr);
                 if(qr == null || qr == 'undefined' || qr.length == 0){
                     app.loading = false;
                     return;
                 }
+                
                 app.loading = true;
                 app.loadStatus = "Decrypting and Validating Request"; 
                 app.id = app.qr;
             
-                let req = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.id);
-                app.requestMessage = await app.$BridgeMobile.validateAuthRequest(req.request);
+                try{
+                    alert(app.id);
+                    let req = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.id);
+                    console.log("Request: " + JSON.stringify(req));
 
-                app.messageValid = app.requestMessage.signatureValid;
+                    app.requestMessage = await app.$BridgeMobile.validateAuthRequest(req.request);
+                    console.log("Message: " + app.requestMessage)
 
-                let passportContext = await app.$BridgeMobile.getPassportContext();
-                let requestingPassport = await app.$BridgeMobile.getPassportDetails(passportContext.passport, passportContext.passphrase, app.requestMessage.passportId);
-                requestingPassport.name = requestingPassport.id;
-                requestingPassport.known = false;
-                if(requestingPassport.partnerName && requestingPassport.partnerName.length > 0){
-                    requestingPassport.name = requestingPassport.partnerName;
-                    requestingPassport.known = true;
-                }
-                app.requestingPassport = requestingPassport;
-                
-                let requestedClaimTypes = await app.$BridgeMobile.getClaimTypes(app.requestMessage.payload.claimTypes);
-                if(requestedClaimTypes){
-                    for(let i=0; i<requestedClaimTypes.length; i++){
-                        let claim = passportContext.passport.getClaimPackage(requestedClaimTypes[i].id);
-                        requestedClaimTypes[i].claim = claim != null;
+                    app.messageValid = app.requestMessage.signatureValid;
+
+                    let passportContext = await app.$BridgeMobile.getPassportContext();
+                    let requestingPassport = await app.$BridgeMobile.getPassportDetails(passportContext.passport, passportContext.passphrase, app.requestMessage.passportId);
+                    requestingPassport.name = requestingPassport.id;
+                    requestingPassport.known = false;
+                    if(requestingPassport.partnerName && requestingPassport.partnerName.length > 0){
+                        requestingPassport.name = requestingPassport.partnerName;
+                        requestingPassport.known = true;
                     }
+                    app.requestingPassport = requestingPassport;
+                    
+                    let requestedClaimTypes = await app.$BridgeMobile.getClaimTypes(app.requestMessage.payload.claimTypes);
+                    if(requestedClaimTypes){
+                        for(let i=0; i<requestedClaimTypes.length; i++){
+                            let claim = passportContext.passport.getClaimPackage(requestedClaimTypes[i].id);
+                            requestedClaimTypes[i].claim = claim != null;
+                        }
+                    }
+                    app.requestedClaimTypes = requestedClaimTypes;
+                    app.requestLoaded = true;
+                    app.loading = false;
+                }   
+                catch(err){
+                    alert(err.message);
+                    console.log("Error: " + err.message);
                 }
-                app.requestedClaimTypes = requestedClaimTypes;
-                app.requestLoaded = true;
-                app.loading = false;
             }, 500);
         },
         async sendClaims(){
