@@ -130,7 +130,7 @@ export default {
     },
     methods:{
         async init(){
-            alert("Init");
+            
         },
         scan(){
             let app = this;
@@ -143,24 +143,23 @@ export default {
                 $("#app_wrapper").show();
                 $(".scan-qr-overlay").hide();
 
-
-                alert("Code Found: " + qr);
+                //alert("Code Found: " + qr);
                 if(qr == null || qr == 'undefined' || qr.length == 0){
                     app.loading = false;
                     return;
                 }
                 
+                app.qr = qr;
                 app.loading = true;
                 app.loadStatus = "Decrypting and Validating Request"; 
                 app.id = app.qr;
             
                 try{
-                    alert(app.id);
                     let req = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.id);
-                    console.log("Request: " + JSON.stringify(req));
+                    //console.log("Request: " + JSON.stringify(req));
 
                     app.requestMessage = await app.$BridgeMobile.validateAuthRequest(req.request);
-                    console.log("Message: " + app.requestMessage)
+                    //console.log("Message: " + app.requestMessage)
 
                     app.messageValid = app.requestMessage.signatureValid;
 
@@ -186,7 +185,7 @@ export default {
                     app.loading = false;
                 }   
                 catch(err){
-                    alert(err.message);
+                    alert("Error: " + err.message);
                     console.log("Error: " + err.message);
                 }
             }, 500);
