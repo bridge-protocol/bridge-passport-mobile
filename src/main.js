@@ -45,10 +45,12 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
     onDeviceReady: async function() { 
-        console.log('deviceready');
+        console.log('device is ready');
         $(".loading").hide();
+        
         //Init the App UI
         initVue();
+
         //Init the scan UI
         $(".scan-qr-cancel").click(function(){
             $("#app_wrapper").show();

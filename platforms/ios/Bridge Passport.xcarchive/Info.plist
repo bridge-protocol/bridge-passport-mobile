@@ -17,14 +17,14 @@
 		<key>CFBundleVersion</key>
 		<string>1.0.1</string>
 		<key>SigningIdentity</key>
-		<string>Apple Development: dev@bridgeprotocol.io (859VCHR23W)</string>
+		<string>Apple Development: Alexander Guba (X9422PY7NF)</string>
 		<key>Team</key>
-		<string>472SC2XXSG</string>
+		<string>67JQP6QV9Z</string>
 	</dict>
 	<key>ArchiveVersion</key>
 	<integer>2</integer>
 	<key>CreationDate</key>
-	<date>2021-06-09T17:02:20Z</date>
+	<date>2021-06-28T21:52:54Z</date>
 	<key>Name</key>
 	<string>Bridge Passport</string>
 	<key>SchemeName</key>

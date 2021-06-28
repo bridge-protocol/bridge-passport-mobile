@@ -1,29 +1,32 @@
 <template>
-    <v-container fill-height align-start text-center class="mx-0 my-0 px-0 py-0" ref="mainContainer">
-        <v-container v-if="refreshing" fill-height align-middle class="mx-0 my-0 px-0 py-0">
-            <v-progress-circular
-                indeterminate
-                color="secondary"
-                style="margin-left: 48%;"
+    <v-container fill-height fluid align-start justify-center dark class="ma-0 pa-0">
+        <v-app-bar
+            app
+            clipped-left
+            color="color-gradient"
             >
-            <div class="pt-4 mt-12 text-no-wrap">
-                {{loadStatus}}
+            <h3 style="width: 100%; text-align:center; margin-left: 24px;">My Bridge Identity</h3>
+            <v-icon @click="close" style="float:right;">mdi-close</v-icon>
+        </v-app-bar>
+        <v-container fill-height fluid align-center justify-center v-if="refreshing">
+            <div style="width:100%; text-align:center;">
+                <img src="../assets/spinner.gif">
+                <div>{{loadStatus}}</div>
             </div>
-            </v-progress-circular>
         </v-container>
-        <v-container v-if="!refreshing" px-0 py-0 mx-0 my-0 style="position:relative; top:10px; left:0px;'">
+        <v-container fill-height fluid align-start v-if="!refreshing" class="mx-0 px-0" style="margin-top:48px;">
             <v-expansion-panels>
                 <v-expansion-panel @click="passportDetail">
-                    <v-expansion-panel-header class="left-border-color-primary pt-1 pb-1">
+                    <v-expansion-panel-header class="left-border-color-primary pt-4 pb-4">
                         <v-row>
                             <v-col cols="auto"><v-img src="./img/bridge-token-white.png" height="40" width="40"></v-img></v-col>
-                            <v-col cols="8">
-                                <div class="mb-1 title-2">Id</div>
-                                <div class="caption" v-text="passportId" style="word-break: break-all;"></div>
+                            <v-col cols="6">
+                                <div class="mb-1 title-2">Passport Id</div>
+                                <div class="caption" v-text="passportId" style="overflow: hidden; text-overflow: ellipsis; width:200px;"></div>
                             </v-col>
                         <v-row>
                     </v-expansion-panel-header>
-                     <v-expansion-panel-content class="left-border-color-primary">
+                    <v-expansion-panel-content class="left-border-color-primary pt-0 pb-0">
                         <v-subheader class="pl-0 ml-0 caption">Passport Details</v-subheader>
                         <v-divider class="mb-2"></v-divider>
                         <v-row class="mb-n4">
@@ -34,7 +37,6 @@
                             <v-col cols="2" class="text-left">Id:</v-col>
                             <v-col cols="auto" class="text-left">{{passportId}}</v-col>
                         </v-row>
-
                     </v-expansion-panel-content>
                 </v-expansion-panel>
                 <v-alert
@@ -48,14 +50,14 @@
                     No digital identity verified claims found.  To add verified claims, use the Bridge Passport Browser Extension and re-import your passport with the added claims.
                 </v-alert>
                 <v-expansion-panel
-                v-for="(claim,i) in claims"
+                v-for="(claim) in claims"
                 :key="claim.id"
                 @click="claimSelected(claim)"
                 >
-                    <v-expansion-panel-header class="left-border-color-primary pt-2 pb-2">
+                    <v-expansion-panel-header class="left-border-color-primary pt-4 pb-4">
                         <v-row>
                             <v-col cols="auto"><v-img src="./img/bridge-token-white.png" height="40" width="40"></v-img></v-col>
-                            <v-col cols="auto">
+                            <v-col cols="8">
                                 <div class="mb-1 title-2" v-text="claim.claimTypeName"></div>
                                 <div class="caption" v-text="claim.claimValue"></div>
                             </v-col>
@@ -96,7 +98,6 @@ export default {
     data: function() {
         return {
             loadStatus: "Loading Bridge Identity",
-            mainContainerHeight: 690,
             passportId: "",
             passportDetailSelected: false,
             passportNeoLoading: false,
@@ -137,7 +138,6 @@ export default {
                 app.neoWallet = app.passportContext.passport.getWalletForNetwork("neo");
                 app.ethWallet = app.passportContext.passport.getWalletForNetwork("eth");
                 await app.refreshClaims();
-                app.mainContainerHeight = app.$refs.mainContainer.clientHeight;
             }, 500);
         },
         refreshClaims: async function(){
@@ -173,6 +173,10 @@ export default {
         },
         openUrl: function(url){
             window.open(url);
+        },
+        close(){
+            this.$router.push({ path: '/', query: { } });
+            this.$router.go(1);
         }
     },
     mounted: async function()

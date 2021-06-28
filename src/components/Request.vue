@@ -1,108 +1,102 @@
 <template>
-     <v-container fill-height justify-center dark>
+     <v-container fill-height fluid align-start justify-center dark class="ma-0 pa-0">
         <v-app-bar
             app
             clipped-left
             color="color-gradient"
-            class="text-center"
             >
-            <h3 style="width: 100%; text-align:center;">Request Identification Claims</h3>
+            <h3 style="width: 100%; text-align:center; margin-left: 36px;">Request Identification Claims</h3>
+            <v-icon @click="cancel" style="float:right;">mdi-close</v-icon>
         </v-app-bar>
-        <v-container v-if="loading" fill-height align-middle class="mx-0 my-0 px-0 py-0">
-            <v-progress-circular
-                indeterminate
-                color="secondary"
-                style="margin-left: 48%;"
-            >
-            <div class="pt-4 mt-12 text-no-wrap">
-                {{loadStatus}}
+        <v-container fill-height fluid align-center justify-center v-if="loading" style="margin-top:-64px;">
+            <div style="width:100%; text-align:center;">
+                <img src="../assets/spinner.gif">
+                <div>{{loadStatus}}</div>
             </div>
-            </v-progress-circular>
         </v-container>
-        <v-container v-if="!loading && !dialog && !response" mx-2 style="position:absolute; top:10px; left:0px;">
-            <p class="subheading text-justify">
-                Choose the identity claims you want to request.
-            </p>
-            <v-subheader class="pl-0 ml-0 mt-n2 caption">Anonymous Claim Types</v-subheader>
-            <v-divider class="my-n1"></v-divider>
-            <v-checkbox
-                v-model="claims"
-                label="Over 18"
-                value="100001"
-                dense
-                class="mb-n6"
-            ></v-checkbox>
-            <v-checkbox
-                v-model="claims"
-                label="Over 21"
-                value="100002"
-                dense
-                class="mb-n6"
-            ></v-checkbox>
-            <v-checkbox
-                v-model="claims"
-                label="Country"
-                value="100003"
-                dense
-                class="mb-n6"
-            ></v-checkbox>
-            <v-checkbox
-                v-model="claims"
-                label="State / Province"
-                value="100004"
-                dense
-            ></v-checkbox>
+        <v-container fill-height fluid align-start v-if="!loading && !dialog && !response" style="margin-top:64px;">
+            <div style="width:100%;">
+                <p class="subheading text-justify">
+                    Choose the identity claims you want to request.
+                </p>
+                <v-subheader class="pl-0 ml-0 mt-n2 caption">Anonymous Claim Types</v-subheader>
+                <v-divider class="my-n1"></v-divider>
+                <v-checkbox
+                    v-model="claims"
+                    label="Over 18"
+                    value="100001"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Over 21"
+                    value="100002"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Country"
+                    value="100003"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="State / Province"
+                    value="100004"
+                    dense
+                ></v-checkbox>
 
-            <v-subheader class="pl-0 ml-0 mt-n1 caption">Private Claim Types</v-subheader>
-            <v-divider class="my-n1"></v-divider>
-            <v-checkbox
-                v-model="claims"
-                label="First Name"
-                value="1"
-                dense
-                class="mb-n6"
-            ></v-checkbox>
-            <v-checkbox
-                v-model="claims"
-                label="Last Name"
-                value="2"
-                dense
-                class="mb-n6"
-            ></v-checkbox>
-            <v-checkbox
-                v-model="claims"
-                label="E-mail Address"
-                value="3"
-                dense
-                class="mb-n6"
-            ></v-checkbox>
-            <v-checkbox
-                v-model="claims"
-                label="Date of Birth"
-                value="4"
-                dense
-                class="mb-6"
-            ></v-checkbox>
-            <v-alert
-                dense
-                outlined
-                type="error"
-                v-if="error"
-                style="font-size: .9em"
-                >
-                {{errorMessage}}
-            </v-alert>
-            <v-btn
-                class="button-light mr-1"
-                @click="showQR"
-            >
-                Request Claims
-            </v-btn>
-            <v-btn
-                @click="cancel"
-            >
-                Cancel
-            </v-btn>
+                <v-subheader class="pl-0 ml-0 mt-n1 caption">Private Claim Types</v-subheader>
+                <v-divider class="my-n1"></v-divider>
+                <v-checkbox
+                    v-model="claims"
+                    label="First Name"
+                    value="1"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Last Name"
+                    value="2"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="E-mail Address"
+                    value="3"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Date of Birth"
+                    value="4"
+                    dense
+                    class="mb-6"
+                ></v-checkbox>
+                <v-alert
+                    dense
+                    outlined
+                    type="error"
+                    v-if="error"
+                    style="font-size: .9em"
+                    >
+                    {{errorMessage}}
+                </v-alert>
+                <div style="width:100%; text-align:center;">
+                    <v-btn
+                        class="button-light mr-1"
+                        @click="showQR"
+                    >
+                        Request Claims
+                    </v-btn>
+                </div>
+            </div>
         </v-container>
         <v-container v-if="!loading && !dialog && response" style="position:absolute; top:0px; left:0px;">
             <v-expansion-panels>
@@ -117,7 +111,7 @@
                     No digital identity verified claims found.  To add verified claims, use the Bridge Passport Browser Extension and re-import your passport with the added claims.
                 </v-alert>
                 <v-expansion-panel
-                v-for="(claim,i) in claims"
+                v-for="(claim) in claims"
                 :key="claim.id"
                 class="mb-1 ml-0 px-0 py-0"
                 @click="claimSelected(claim)"
@@ -169,11 +163,12 @@
             <v-toolbar
                 color="color-gradient"
                 dark
+                class="text-center"
                 >
-                <v-toolbar-title class="subtitle-1">Claims Request Code</v-toolbar-title>
+                <h3 style="width: 100%; text-align:center;">Claims Request Code</h3>
             </v-toolbar>
             <v-card-text>
-            <p class="mt-3">Scan this QR Code with the target Bridge Mobile Passport App to request identification claims.</p>
+            <p class="mt-6">Scan this QR Code with the target Bridge Mobile Passport App to request identification claims.</p>
             <center>
                 <div style="background-color:white; height:260px; width:260px; padding-top: 5px;">
                     <img :src="qr" v-if="qr != null">
@@ -181,15 +176,8 @@
             </center>
 
             <div class="text-center m-6">
-                <v-progress-circular
-                :size="25"
-                color="primary"
-                indeterminate
-                class="my-4"
-                ></v-progress-circular>
-                <br>
-                 Waiting for response...
-                 <br><br>
+                <img src="../assets/spinner.gif" class="mt-2">
+                <div class="mb-2">Waiting for response...</div>
                 <v-btn
                     @click="closeQR"
                     style="width: 70%;"

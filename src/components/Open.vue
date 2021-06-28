@@ -1,16 +1,15 @@
 <template>
     <v-container id="container" fill-height justify-center dark>
-        <v-overlay :value="loading">
-            <v-progress-circular
-                indeterminate
-                color="secondary"
-                style="margin-left: 48%;"
-            >
-            <div class="pt-4 mt-12 text-no-wrap">
-                {{loadStatus}}
-            </div>
-            </v-progress-circular>
-        </v-overlay>
+        <v-container fill-height fluid v-if="loading">
+            <v-row align="center"
+                justify="center"
+                class="mt-n4">
+                <v-col>
+                    <img src="../assets/spinner.gif"><br>
+                    {{loadStatus}}
+                </v-col>
+            </v-row>
+        </v-container>
         <v-container  class="justify-center text-center" v-if="!loading">
             <v-app-bar
             app
@@ -61,22 +60,33 @@ export default {
             },500);
         },
         async scan(){
-            $("body").hide();
-            $("#app_wrapper").hide();
-            $(".scan-qr-overlay").show();
-            var code = await this.$QrCodeScanner.scan();
-            this.$QrCodeScanner.cancel();
-            $("#app_wrapper").show();
-            $(".scan-qr-overlay").hide();
+            let app = this;
+            setTimeout(async function(){
+                try{
+                    //$("body").hide();
+                    $("#app_wrapper").hide();
+                    $(".scan-qr-overlay").show();
 
-            let res = await this.$BridgeProtocol.Services.RequestRelay.getRequest(code);
-            if(res && res.request){
-                var storage = window.localStorage;
-                await storage.setItem('passport', res.request);
-                this.$router.push({ path: '/unlock' });
-            }
-            else
-                this.$router.push({ path: '/open', query: { } });
+                    var code = await app.$QrCodeScanner.scan();
+                    app.$QrCodeScanner.cancel();
+                    
+                    $("#app_wrapper").show();
+                    $(".scan-qr-overlay").hide();
+
+                    let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(code);
+                    if(res && res.request){
+                        var storage = window.localStorage;
+                        await storage.setItem('passport', res.request);
+                        app.$router.push({ path: '/unlock' });
+                    }
+                    else
+                        app.$router.push({ path: '/open', query: { } });
+                }   
+                catch(err){
+                    alert("Error: " + err.message);
+                    console.log("Error: " + err.message);
+                }
+            }, 500);
         }
     },
     mounted: async function()

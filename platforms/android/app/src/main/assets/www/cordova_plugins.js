@@ -200,6 +200,14 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "QRScanner"
       ]
+    },
+    {
+      "id": "cordova-plugin-spinner-dialog.SpinnerDialog",
+      "file": "plugins/cordova-plugin-spinner-dialog/www/spinner.js",
+      "pluginId": "cordova-plugin-spinner-dialog",
+      "merges": [
+        "window.plugins.spinnerDialog"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -207,6 +215,7 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-add-swift-support": "2.0.2",
     "cordova-plugin-qrcodejs": "1.0.0",
     "cordova-plugin-qrscanner": "3.0.1",
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-plugin-spinner-dialog": "1.3.1"
   };
 });

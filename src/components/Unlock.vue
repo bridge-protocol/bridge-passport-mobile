@@ -1,12 +1,15 @@
 <template>
-    <v-container fill-height justify-center dark>
-        <v-overlay :value="loading">
-            <v-progress-circular
-                :size="50"
-                color="primary"
-                indeterminate
-                ></v-progress-circular>
-        </v-overlay>
+    <v-container fill-height justify-center dark style="margin-top:-64px;">
+        <v-container fill-height fluid v-if="loading">
+            <v-row align="center"
+                justify="center"
+                class="mt-n4">
+                <v-col>
+                    <img src="../assets/spinner.gif"><br>
+                    {{loadStatus}}
+                </v-col>
+            </v-row>
+        </v-container>
         <v-card inverted v-if="!loading">
             <v-toolbar
                 color="color-gradient"
@@ -15,13 +18,13 @@
                 <v-toolbar-title class="subtitle-1">Unlock Passport</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-                <div class="caption text-justify mt-4 mb-2">
+                <div class="caption text-left mt-4 mb-4">
                     To unlock your passport, please provide the password you provided when it was created.
                 </div>
                 <v-row>
                     <v-col cols="12">
                     <v-text-field v-model="unlockPassword" outlined color="secondary" label="Password" type="password" required></v-text-field>
-                    <div>{{ unlockErrorMessage }}</p>
+                    <div>{{ unlockErrorMessage }}</div>
                     </v-col>
                 </v-row>
             </v-card-text>
