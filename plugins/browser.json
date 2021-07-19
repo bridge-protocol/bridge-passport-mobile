@@ -7,17 +7,20 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-qrscanner": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
     },
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
     },
     "cordova-plugin-qrcodejs": {
-      "PACKAGE_NAME": "io.cordova.hellocordova"
+      "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
+    },
+    "cordova-plugin-qrscanner": {
+      "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "io.bridgeprotocol.bridgepassport"
     }
   },
   "dependent_plugins": {}

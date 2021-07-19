@@ -2,23 +2,37 @@
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
-html {
-    width: 100%;
-    height: 100%;
-}
-
-body {
+html, body {
+    overflow-y: auto;
+    overflow-x: hidden;
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#000000 !important;
+    user-select: none;               
     font-family: Arial, Helvetica;
-    font-size:.8em;
-    min-height:100%;
-    margin:0px;
-    padding:0px;
+    font-size:11px;
+    background-color: black;
+}
+
+.loading
+{
+    margin: 0;
+    position: absolute;
+    top:0;
+    left:0;
     width:100%;
-    color:white;
+    height:100%;
+    min-width:100%;
+    min-height:100%;
+    background-color: black !important;
+}
+
+.loading > img {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .color-gradient{
@@ -26,9 +40,70 @@ body {
     background: linear-gradient(343deg, rgba(144,64,153,1) 0%, rgba(97,85,163,1) 62%, rgba(52,139,201,1) 100%) !important;
 }
 
-.mono-gradient{
-    background: rgb(27,28,29) !important;
-    background: linear-gradient(90deg,rgba(54,56,57,1) 10%, rgba(27,28,29,1) 100%) !important;
+.button-light{
+    color: white !important;
+    background: rgb(144,64,153) !important;
+    background: linear-gradient(343deg, rgba(144,64,153,1) 0%, rgba(97,85,163,1) 62%, rgba(52,139,201,1) 100%) !important;
+}
+
+.button-dark{
+    color: black !important;
+    background: rgb(144,64,153) !important;
+    background: linear-gradient(343deg, rgba(144,64,153,1) 0%, rgba(97,85,163,1) 62%, rgba(52,139,201,1) 100%) !important;
+}
+
+.scan-qr-overlay{
+    position: absolute;
+    top: 0px;
+    width:100%;
+    height:100%;
+    min-width:100%;
+    min-height:100%;
+    color: white;
+    display: none;
+    background-color: transparent;
+}
+
+.scan-qr-header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    font-size: 1em;
+    font-weight:bold;
+    text-align: center;
+    padding-top: 10px;
+    padding-left: 40px;
+    color: white;
+}
+
+.scan-qr-cancel{
+    float:right;
+    padding-right:10px;
+    margin-top:-2px;
+}
+
+.scan-qr-footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    font-size: 2em;
+    color: white;
+}
+
+.scan-qr-target{
+    margin: 0;
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px dashed rgba(97,85,163,1);
+    border-radius:  6px;
 }
 
 .inverted
@@ -52,8 +127,4 @@ body {
     color: black !important;
     background: rgb(144,64,153) !important;
     background: linear-gradient(343deg, rgba(144,64,153,1) 0%, rgba(97,85,163,1) 62%, rgba(52,139,201,1) 100%) !important;
-}
-
-.ui.card{
-    background-color: #000000 !important;
 }
