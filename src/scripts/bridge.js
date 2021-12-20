@@ -138,7 +138,7 @@ var BridgeMobile = {
     async createAuthResponse(passport, password, message, claimTypes){
         //Retrieve the requested claims
         let claims = await passport.getDecryptedClaims(claimTypes, password);
-    
+     
         //Get the requested blockchain addresses
         let addresses = [];
     
@@ -161,83 +161,8 @@ var BridgeMobile = {
                 setTimeout(waitForComplete, 5000);
             })();
         });
-    },
-    async waitVerifyPayment(network, transactionId, from, to, amount, identifier){
-        return new Promise(function (resolve, reject) {
-            (async function waitForComplete(){
-                let res = await BridgeProtocol.Services.Blockchain.verifyPayment(network, transactionId, from, to, amount, identifier);
-                if(res.complete){
-                    console.log("Transaction found and complete");
-                    return resolve(res.success);
-                }
-                console.log("Transaction not complete. Waiting and retrying.");
-                setTimeout(waitForComplete, 15000);
-            })();
-        });
-    },
-    async getBlockchainClaimPublishStatus(passport, passphrase, wallet, claimTypeId){
-        let publishStatus = {
-            status: 0,
-            text: this.getClaimPublishStatusText(0)
-        };
-
-        let pendingStatus = await this.getPendingClaimPublishStatus(passport, passphrase, wallet.network, claimTypeId);
-        if(pendingStatus)
-            publishStatus = pendingStatus;
-
-        if(publishStatus.status != 2 && publishStatus.status != 3){
-            let res = await BridgeProtocol.Services.Blockchain.getClaim(wallet.network, claimTypeId, wallet.address);
-            if(res && res.claim && res.verified){
-                publishStatus.status = 1;
-                publishStatus.text = res.claim.value;
-            }
-        }
-
-        return publishStatus;
-    },
-    async getPendingClaimPublishStatus(passport, passphrase, network, claimTypeId){
-        let pendingList = await BridgeProtocol.Services.Claim.getPendingClaimPublishList(passport, passphrase);
-
-        for(let i=0; i<pendingList.length; i++){
-            if(pendingList[i].claimTypeId === claimTypeId && pendingList[i].network.toLowerCase() === network.toLowerCase())
-            {
-                let status = 2;
-                if(network.toLowerCase() === "neo" && pendingList[i].status == 9)
-                    status = 3;
-
-                return {
-                    id: pendingList[i].id,
-                    status,
-                    text: this.getClaimPublishStatusText(status, pendingList[i].network),
-                    txId: pendingList[i].claimPublishTransactionId
-                };
-            } 
-        }
-
-        return null;
-    },
-    getClaimPublishStatusText(status, network){
-        let text;
-        switch(status) {
-            case 1:
-                text = "Published";
-                break;
-            case 2:
-                if(network && network.toLowerCase() === "eth")
-                    text = "Pending Publish";
-                else
-                    text = "Pending Publish Approval";
-                break;
-            case 3:
-                text = "Publishing Approved";
-                break;
-            default:
-                text = "Not Published";
-        }
-        return text;
     }
 };
-
 
 export default BridgeMobile;
   

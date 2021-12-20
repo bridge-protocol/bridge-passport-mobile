@@ -171,7 +171,7 @@ export default {
                     let requestedClaimTypes = await app.$BridgeMobile.getClaimTypes(app.requestMessage.payload.claimTypes);
                     if(requestedClaimTypes){
                         for(let i=0; i<requestedClaimTypes.length; i++){
-                            let claim = passportContext.passport.getClaimPackage(requestedClaimTypes[i].id);
+                            let claim = app.getClaimByTypeId(passportContext.passport,requestedClaimTypes[i].id);
                             requestedClaimTypes[i].claim = claim != null;
                         }
                     }
@@ -184,6 +184,14 @@ export default {
                     console.log("Error: " + err.message);
                 }
             }, 500);
+        },
+        getClaimByTypeId(passport, id){
+            for(let i=0; i<passport.claims.length; i++){
+                if(passport.claims[i].typeId == id)
+                    return passport.claims[i];
+            }
+
+            return null;
         },
         async sendClaims(){
             if(this.selectedClaimTypes.length == 0){
