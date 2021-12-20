@@ -47,10 +47,31 @@
                     label="State / Province"
                     value="100004"
                     dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Watchlist Clear"
+                    value="100005"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="State / Province"
+                    value="100004"
+                    dense
                 ></v-checkbox>
 
                 <v-subheader class="pl-0 ml-0 mt-n1 caption">Private Claim Types</v-subheader>
                 <v-divider class="my-n1"></v-divider>
+                <v-checkbox
+                    v-model="claims"
+                    label="Photo"
+                    value="0"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
                 <v-checkbox
                     v-model="claims"
                     label="First Name"
@@ -76,6 +97,13 @@
                     v-model="claims"
                     label="Date of Birth"
                     value="4"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Phone Number"
+                    value="5"
                     dense
                     class="mb-6"
                 ></v-checkbox>
@@ -225,13 +253,27 @@ export default {
                 app.loading = true;
                 app.loadStatus = "Generating Request Code";
 
+                console.log("getting passport context");
                 let context = await app.$BridgeMobile.getPassportContext();
+                console.log("generating token");
                 app.token = app.$BridgeMobile.createRandom();
+                console.log("creating the auth request");
                 let authRequest = await app.$BridgeMobile.createAuthRequest(context.passport, context.passphrase, app.token, app.claims);
-                let req = await app.$BridgeProtocol.Services.RequestRelay.createRequest(2, authRequest);
-                if(!req && !req.id){
-                    app.loading = false;
-                    return;
+                console.log("sending relay");
+
+                console.log("is all fetch broken?");
+                let testRequest = await app.$BridgeProtocol.Services.RequestRelay.getRequest("304c51cc-7e0d-49dd-8acd-e788c1919f18");
+                console.log(JSON.stringify(testRequest));
+                try{
+                    let req = await app.$BridgeProtocol.Services.RequestRelay.createRequest(2, "123123123");
+                    console.log(req);
+                    if(!req && !req.id){
+                        app.loading = false;
+                        return;
+                    }
+                }
+                catch(err){
+                    console.log(err.message);
                 }
 
                 app.qr = await app.$QrCodeGenerator.create(req.id);

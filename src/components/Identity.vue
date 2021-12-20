@@ -59,12 +59,13 @@
                             <v-col cols="auto"><v-img src="./img/bridge-token-white.png" height="40" width="40"></v-img></v-col>
                             <v-col cols="8">
                                 <div class="mb-1 title-2" v-text="claim.claimTypeName"></div>
-                                <div class="caption" v-text="claim.claimValue"></div>
+                                <div class="caption" v-text="claim.claimValue" v-if="claim.claimTypeId != 0"></div>
                             </v-col>
                         <v-row>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="left-border-color-primary">
                         <v-container fluid>
+                            <v-img v-if="claim.claimTypeId == 0" :src="claim.claimValue" width="80"></v-img>
                             <v-subheader class="pl-0 ml-0 caption">
                                 Claim Details 
                             </v-subheader>

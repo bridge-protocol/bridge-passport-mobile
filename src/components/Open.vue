@@ -46,8 +46,6 @@ export default {
             setTimeout(async function(){
                 if(app.qr)
                 {
-                    alert('QR');
-                    alert(app.qrscan);
                     app.loading = true;
                     try{
                         let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.qrscan);
@@ -80,8 +78,8 @@ export default {
                         app.loading = false;
                         return;
                     }
-                    code = app.qrscan.replace("BPP-","");
 
+                    code = code.replace("BPP-","");
                     let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(code);
                     if(res && res.request){
                         var storage = window.localStorage;
