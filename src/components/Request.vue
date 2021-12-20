@@ -58,8 +58,8 @@
                 ></v-checkbox>
                 <v-checkbox
                     v-model="claims"
-                    label="State / Province"
-                    value="100004"
+                    label="COVID-19 Vaccinated"
+                    value="100006"
                     dense
                 ></v-checkbox>
 
@@ -251,29 +251,15 @@ export default {
             let app = this;
             setTimeout(async function(){
                 app.loading = true;
-                app.loadStatus = "Generating Request Code";
+                app.loadStatus = "Generating request code";
 
-                console.log("getting passport context");
                 let context = await app.$BridgeMobile.getPassportContext();
-                console.log("generating token");
                 app.token = app.$BridgeMobile.createRandom();
-                console.log("creating the auth request");
                 let authRequest = await app.$BridgeMobile.createAuthRequest(context.passport, context.passphrase, app.token, app.claims);
-                console.log("sending relay");
-
-                console.log("is all fetch broken?");
-                let testRequest = await app.$BridgeProtocol.Services.RequestRelay.getRequest("304c51cc-7e0d-49dd-8acd-e788c1919f18");
-                console.log(JSON.stringify(testRequest));
-                try{
-                    let req = await app.$BridgeProtocol.Services.RequestRelay.createRequest(2, "123123123");
-                    console.log(req);
-                    if(!req && !req.id){
-                        app.loading = false;
-                        return;
-                    }
-                }
-                catch(err){
-                    console.log(err.message);
+                let req = await app.$BridgeProtocol.Services.RequestRelay.createRequest(2, authRequest);
+                if(!req && !req.id){
+                    app.loading = false;
+                    return;
                 }
 
                 app.qr = await app.$QrCodeGenerator.create(req.id);
@@ -283,9 +269,9 @@ export default {
                 let response = await app.$BridgeMobile.waitGetAuthResponse(req.id);
                 app.dialog = false;
                 app.loading = true;
-                app.loadStatus = "Response Received";
+                app.loadStatus = "Response received";
                 setTimeout(async function(){
-                    app.loadStatus = "Decrypting and Validating Response";
+                    app.loadStatus = "Decrypting and validating response";
                     let context = await app.$BridgeMobile.getPassportContext();
                     app.response = await app.$BridgeMobile.validateAuthResponse(context.passport, context.passphrase, app.token, response);
                     app.claims = await app.$BridgeMobile.getFullClaimsInfo(app.response.claims);
