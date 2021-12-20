@@ -9,7 +9,7 @@ var QRCodeScanner = class QRCodeScanner{
                         reject(err);
                     }
 
-                    console.log("Code found: " + contents);
+                    console.log("QR code found: " + contents);
                         resolve(contents);
                     };
                     

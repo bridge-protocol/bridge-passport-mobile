@@ -46,6 +46,8 @@ export default {
             setTimeout(async function(){
                 if(app.qr)
                 {
+                    alert('QR');
+                    alert(app.qrscan);
                     app.loading = true;
                     try{
                         let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(app.qrscan);
@@ -72,6 +74,13 @@ export default {
                     
                     $("#app_wrapper").show();
                     $(".scan-qr-overlay").hide();
+
+                    if(code.indexOf('BPP-') != 0){
+                        alert("This is not a passport QR code.");
+                        app.loading = false;
+                        return;
+                    }
+                    code = app.qrscan.replace("BPP-","");
 
                     let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(code);
                     if(res && res.request){

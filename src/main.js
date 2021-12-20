@@ -45,7 +45,7 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
     onDeviceReady: async function() { 
-        console.log('device is ready');
+        console.log('device is ready now');
         $(".loading").hide();
         
         //Init the App UI
