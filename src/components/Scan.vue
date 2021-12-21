@@ -204,9 +204,16 @@ export default {
 
             try{
                 let passportContext = await this.$BridgeMobile.getPassportContext();
+                for(let i=0; i<this.selectedClaimTypes.length; i++)
+                {
+                    let claim = this.getClaimByTypeId(passportContext.passport,this.selectedClaimTypes[i]);
+                    console.log(this.selectedClaimTypes[i] + " " + claim);
+                }
+                //console.log("creating auth response");
                 let response = await this.$BridgeMobile.createAuthResponse(passportContext.passport, passportContext.passphrase, this.requestMessage, this.selectedClaimTypes); 
 
                 this.loadStatus = "Sending Response";
+                console.log("sending response");
                 let req = await this.$BridgeProtocol.Services.RequestRelay.createResponse(this.id, response);
                 this.requestSent = true;
                 this.loading = false;

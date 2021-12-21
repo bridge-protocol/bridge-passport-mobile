@@ -137,7 +137,7 @@ var BridgeMobile = {
     },
     async createAuthResponse(passport, password, message, claimTypes){
         //Retrieve the requested claims
-        let claims = await passport.getDecryptedClaims(claimTypes, password);
+        let claims = await this.getDecryptedClaims(passport, password, claimTypes);
      
         //Get the requested blockchain addresses
         let addresses = [];
@@ -145,6 +145,28 @@ var BridgeMobile = {
         //Find the claims they asked for and sign and send the response
         //Optionally add networks (neo, eth) to provide blockcahin addresses in the response
         return await BridgeProtocol.Messaging.Auth.createPassportChallengeResponse(passport, password, message.publicKey, message.payload.token, claims, addresses); 
+    },
+    async getDecryptedClaims(passport, password, claimTypes){
+        let claims = [];
+
+        for(let i=0; i<claimTypes.length; i++){
+            let claim = this.getClaimByTypeId(passport, claimTypes[i]);
+            console.log(claimTypes[i] + claim);
+            if(claim){
+                let decrypted = await claim.decrypt(passport.privateKey, password);
+                console.log(JSON.stringify(decrypted));
+                if(decrypted)
+                    claims.push(decrypted);
+            }
+        }
+        return claims;
+    },
+    getClaimByTypeId(passport, id){
+        for(let i=0; i<passport.claims.length; i++){
+            if(passport.claims[i].typeId == id)
+                return passport.claims[i];
+        }
+        return null;
     },
     async validateAuthResponse(passport, password, token, response){
         return await BridgeProtocol.Messaging.Auth.verifyPassportChallengeResponse(passport, password, response, token);
