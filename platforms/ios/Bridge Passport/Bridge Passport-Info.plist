@@ -31,8 +31,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to scan QR codes.</string>
-	<key>NSMainNibFile</key>
-	<string></string>
 	<key>NSMainNibFile~ipad</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>

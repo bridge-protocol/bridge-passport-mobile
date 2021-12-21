@@ -47,10 +47,31 @@
                     label="State / Province"
                     value="100004"
                     dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Watchlist Clear"
+                    value="100005"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="COVID-19 Vaccinated"
+                    value="100006"
+                    dense
                 ></v-checkbox>
 
                 <v-subheader class="pl-0 ml-0 mt-n1 caption">Private Claim Types</v-subheader>
                 <v-divider class="my-n1"></v-divider>
+                <v-checkbox
+                    v-model="claims"
+                    label="Photo"
+                    value="0"
+                    dense
+                    class="mb-n6"
+                ></v-checkbox>
                 <v-checkbox
                     v-model="claims"
                     label="First Name"
@@ -77,6 +98,13 @@
                     label="Date of Birth"
                     value="4"
                     dense
+                    class="mb-n6"
+                ></v-checkbox>
+                <v-checkbox
+                    v-model="claims"
+                    label="Phone Number"
+                    value="5"
+                    dense
                     class="mb-6"
                 ></v-checkbox>
                 <v-alert
@@ -98,7 +126,7 @@
                 </div>
             </div>
         </v-container>
-        <v-container v-if="!loading && !dialog && response" style="position:absolute; top:0px; left:0px;">
+        <v-container v-if="!loading && !dialog && response" style="position:absolute; top:0px; left:0px; margin-top:64px;">
             <v-expansion-panels>
                 <v-alert
                     border="left"
@@ -108,7 +136,7 @@
                     class="caption text-left mt-2"
                     v-if="claims.length == 0"
                     >
-                    No digital identity verified claims found.  To add verified claims, use the Bridge Passport Browser Extension and re-import your passport with the added claims.
+                    No digital identity verified claims found. 
                 </v-alert>
                 <v-expansion-panel
                 v-for="(claim) in claims"
@@ -121,12 +149,13 @@
                             <v-col cols="auto"><v-img src="./img/bridge-token-white.png" height="40" width="40"></v-img></v-col>
                             <v-col cols="auto">
                                 <div class="mb-1 title-2" v-text="claim.claimTypeName"></div>
-                                <div class="caption" v-text="claim.claimValue"></div>
+                                <div class="caption" v-text="claim.claimValue" v-if="claim.claimTypeId != 0"></div>
                             </v-col>
                         <v-row>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="py-0">
                         <v-container fluid>
+                            <v-img v-if="claim.claimTypeId == 0" :src="claim.claimValue" width="80"></v-img>
                             <v-subheader class="pl-0 ml-0 caption">
                                 Claim Details 
                             </v-subheader>
@@ -223,7 +252,7 @@ export default {
             let app = this;
             setTimeout(async function(){
                 app.loading = true;
-                app.loadStatus = "Generating Request Code";
+                app.loadStatus = "Generating request code";
 
                 let context = await app.$BridgeMobile.getPassportContext();
                 app.token = app.$BridgeMobile.createRandom();
@@ -241,9 +270,9 @@ export default {
                 let response = await app.$BridgeMobile.waitGetAuthResponse(req.id);
                 app.dialog = false;
                 app.loading = true;
-                app.loadStatus = "Response Received";
+                app.loadStatus = "Response received";
                 setTimeout(async function(){
-                    app.loadStatus = "Decrypting and Validating Response";
+                    app.loadStatus = "Decrypting and validating response";
                     let context = await app.$BridgeMobile.getPassportContext();
                     app.response = await app.$BridgeMobile.validateAuthResponse(context.passport, context.passphrase, app.token, response);
                     app.claims = await app.$BridgeMobile.getFullClaimsInfo(app.response.claims);

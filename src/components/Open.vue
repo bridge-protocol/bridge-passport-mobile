@@ -73,6 +73,13 @@ export default {
                     $("#app_wrapper").show();
                     $(".scan-qr-overlay").hide();
 
+                    if(code.indexOf('BPP-') != 0){
+                        alert("This is not a passport QR code.");
+                        app.loading = false;
+                        return;
+                    }
+
+                    code = code.replace("BPP-","");
                     let res = await app.$BridgeProtocol.Services.RequestRelay.getRequest(code);
                     if(res && res.request){
                         var storage = window.localStorage;

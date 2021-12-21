@@ -171,7 +171,7 @@ export default {
                     let requestedClaimTypes = await app.$BridgeMobile.getClaimTypes(app.requestMessage.payload.claimTypes);
                     if(requestedClaimTypes){
                         for(let i=0; i<requestedClaimTypes.length; i++){
-                            let claim = passportContext.passport.getClaimPackage(requestedClaimTypes[i].id);
+                            let claim = app.getClaimByTypeId(passportContext.passport,requestedClaimTypes[i].id);
                             requestedClaimTypes[i].claim = claim != null;
                         }
                     }
@@ -185,6 +185,14 @@ export default {
                 }
             }, 500);
         },
+        getClaimByTypeId(passport, id){
+            for(let i=0; i<passport.claims.length; i++){
+                if(passport.claims[i].typeId == id)
+                    return passport.claims[i];
+            }
+
+            return null;
+        },
         async sendClaims(){
             if(this.selectedClaimTypes.length == 0){
                 this.error = true;
@@ -196,9 +204,16 @@ export default {
 
             try{
                 let passportContext = await this.$BridgeMobile.getPassportContext();
+                for(let i=0; i<this.selectedClaimTypes.length; i++)
+                {
+                    let claim = this.getClaimByTypeId(passportContext.passport,this.selectedClaimTypes[i]);
+                    console.log(this.selectedClaimTypes[i] + " " + claim);
+                }
+                //console.log("creating auth response");
                 let response = await this.$BridgeMobile.createAuthResponse(passportContext.passport, passportContext.passphrase, this.requestMessage, this.selectedClaimTypes); 
 
                 this.loadStatus = "Sending Response";
+                console.log("sending response");
                 let req = await this.$BridgeProtocol.Services.RequestRelay.createResponse(this.id, response);
                 this.requestSent = true;
                 this.loading = false;

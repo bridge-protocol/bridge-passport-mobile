@@ -28,7 +28,7 @@ export default {
 
             this.passportLoaded = passport != null;
             this.passportUnlocked = passphrase != null;
-
+            
             if(!this.passportLoaded)
                 this.navigate('/open');
             else if(this.passportLoaded && !this.passportUnlocked)
